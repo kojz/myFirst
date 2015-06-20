@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>   
+   
+   <property name="appName" value="bui-admin" />
+   <property name="LOG_DIR" value="d:/app_log" />
+   <property name="LOG_FILE_NAME" value="bui_admin" />   
+   <property name="logFileNamePattern" value="${LOG_FILE_NAME}_%d{yyyy-MM-dd}_%i" />
+   
+   <property name="consoleLayoutPattern"
+		value="%-20(%d{yyyyMMdd_HH:mm:ss.SSS} [%thread] [%-4relative])
+				[%X{remoteAddr} %X{sessionId} %X{requestAction}] %msg%n" />
+
+   <contextName>${appName}</contextName>
+    
+   <appender name="ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_DIR}/${LOG_FILE_NAME}.log</file>
+    	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+    		<!-- 按天来回滚，如果需要按小时来回滚，则设置为{yyyy-MM-dd_HH} --> 
+			<fileNamePattern>${LOG_DIR}/${logFileNamePattern}.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>30</maxHistory><!-- days -->
+		</rollingPolicy>
+		<layout>
+			<pattern>${consoleLayoutPattern}</pattern>
+		</layout>		
+   </appender>
+    
+   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<layout name="StandardFormat" class="ch.qos.logback.classic.PatternLayout">
+			<pattern>${consoleLayoutPattern}</pattern>
+		</layout>        
+   </appender>
+    
+   <root level="info">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="ROLLINGFILE" />
+   </root>
+	
+ </configuration> 
